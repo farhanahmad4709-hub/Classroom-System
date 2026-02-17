@@ -4,11 +4,14 @@
 
 <head> 
     <title>Success</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div class="card">
     <h1>Welcome {{name}}</h1>
     <p>You are marked present</p>
     <p>{{time}}</p>
+</div>
 </body>
 
 </html>
