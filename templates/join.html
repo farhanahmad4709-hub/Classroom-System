@@ -2,8 +2,10 @@
 <html>
 <head>
     <title>Join Class</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div class="card">
     <h1>Join Classroom</h1>
 
     <form action="/join" method="POST">
@@ -11,5 +13,6 @@
         <input type="text" name="name" required>
         <button type="submit">Join</button>
     </form>
+</div>
 </body>
 </html>
