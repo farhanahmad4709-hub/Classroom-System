@@ -1,1 +1,3 @@
-__pycache__/*.pycvenv/.env
+__pycache__/*.pyc
+env/.env
+database.db
