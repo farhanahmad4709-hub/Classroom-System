@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Teacher Dashboard</title>
+    </head>
+    <body>
+        <h1>Teacher Dashboard</h1>
+
+        <ul>
+            {% for student in students %}
+                <li>ID:  {{ student[0] }} | Name: {{ student[1] }} | Last Active: {{ student[2] }} | Status: {{ student[3] }}</li>
+                {% endfor %}
+        </ul>
+    </body>
+</html>
