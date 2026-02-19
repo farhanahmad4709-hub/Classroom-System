@@ -4,15 +4,26 @@
     <title>Join Class</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
+
+<div class="area"></div>
+
+<ul class="circles">
+    <li></li><li></li><li></li><li></li><li></li>
+    <li></li><li></li><li></li><li></li><li></li>
+</ul>
+
 <div class="card">
     <h1>Join Classroom</h1>
 
     <form action="/join" method="POST">
         <label>Enter Your Name:</label>
         <input type="text" name="name" required>
-        <button type="submit">Join</button>
+
+        <button type="submit" class="btn cta">Join</button>
     </form>
 </div>
+
 </body>
 </html>
