@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, render_template, request, redirect, make_response, session
+from flask import Flask, render_template, request, redirect, make_response, session, jsonify
 import uuid
 from datetime import datetime, timedelta
 
@@ -22,23 +22,23 @@ def init_db():
 
 @app.route("/")
 def home():
-    student_id = request.cookies.get("student_id")
+    student_uuid = request.cookies.get("student_uuid")
 
-    if student_id:
+    if student_uuid:
         conn = sqlite3.connect("database.db")
         cursor = conn.cursor()
 
-        cursor.execute("SELECT name FROM students WHERE id = ?", (student_id,))
+        cursor.execute("SELECT id, name FROM students WHERE uuid = ?", (student_uuid,))
         student = cursor.fetchone()
 
-        conn.close()
-
         if student:
-
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            cursor.execute("UPDATE students SET last_active = ? WHERE id = ?", (current_time, student_id))
+            cursor.execute("UPDATE students SET last_active = ? WHERE uuid = ?", (current_time, student_uuid))
             conn.commit()
-            return render_template("success.html", name=student[0])
+            conn.close()
+            return render_template("success.html", name=student[1])
+        
+        conn.close()  
     
     return render_template("join.html")
 @app.route("/join", methods=["POST"])
@@ -81,6 +81,8 @@ def teacher():
 
     student_status = []
     now = datetime.now()
+    result = []
+
     for s in students:
         student_id, name, last_active_str = s
         if last_active_str:
@@ -89,10 +91,17 @@ def teacher():
                status = "ACTIVE" if (now - last_active_time).total_seconds() <= 10 else "INACTIVE"
             except ValueError:
                 status = "INACTIVE"           
-    else:
-        status = "INACTIVE"
+        else:
+           status = "INACTIVE"
         student_status.append((student_id, name, last_active_str, status))
 
+        result.append({
+            "id": student_id,
+            "name": name,
+            "last_active": last_active_str,
+            "status": status
+        })
+    return jsonify(result)
     return render_template("teacher.html", students=student_status)
 
 if __name__ == "__main__":
